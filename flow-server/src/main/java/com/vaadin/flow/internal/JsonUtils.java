@@ -19,6 +19,7 @@ package com.vaadin.flow.internal;
 import java.util.AbstractList;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -297,6 +298,44 @@ public final class JsonUtils {
             return Json.parse(objectMapper.writeValueAsString(bean));
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Error converting bean to JSON", e);
+        }
+    }
+
+    /**
+     * Converts the given list to JSON.
+     *
+     * @param list
+     *                 the list to convert, not {@code null}
+     * @return a JSON representation of the bean
+     */
+    public static JsonArray listToJson(List<?> list) {
+        if (list == null) {
+            throw new RuntimeException("Cannot convert null to a JSON object");
+        }
+        try {
+            return Json.instance().parse(objectMapper.writeValueAsString(list));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(
+                    "Error converting list to JSON: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Converts the given map to JSON.
+     *
+     * @param map
+     *                the map to convert, not {@code null}
+     * @return a JSON representation of the bean
+     */
+    public static JsonObject mapToJson(Map<String, ?> map) {
+        if (map == null) {
+            throw new RuntimeException("Cannot convert null to a JSON object");
+        }
+        try {
+            return Json.instance().parse(objectMapper.writeValueAsString(map));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(
+                    "Error converting map to JSON: " + e.getMessage());
         }
     }
 }
